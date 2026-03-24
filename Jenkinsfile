@@ -2,11 +2,25 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "your-dockerhub-username/myapp"
+        DOCKER_IMAGE = "balaji2795/myapp"
         DOCKER_TAG = "latest"
     }
 
     stages {
+
+        stage('Create Artifact') {
+            steps {
+                sh 'mkdir -p output'
+                sh 'cp index.html output/'
+                sh 'tar -cvf output/artifact.tar output/'
+            }
+        }
+
+        stage('Archive Artifact') {
+            steps {
+                archiveArtifacts artifacts: 'output/artifact.tar', fingerprint: true
+            }
+        }
 
         stage('Build Docker Image') {
             steps {
@@ -16,8 +30,12 @@ pipeline {
 
         stage('Login to Docker Hub') {
             steps {
-                withCredentials([string(credentialsId: 'docker-password', variable: 'DOCKER_PASS')]) {
-                    sh 'echo $DOCKER_PASS | docker login -u your-dockerhub-username --password-stdin'
+                withCredentials([usernamePassword(
+                    credentialsId: 'docker-creds',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
                 }
             }
         }
