@@ -1,28 +1,42 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_IMAGE = "your-dockerhub-username/myapp"
+        DOCKER_TAG = "latest"
+    }
+
     stages {
-        stage('Clone Repo') {
+
+        stage('Checkout Code') {
             steps {
-                git 'https://github.com/Balaji2795/task2.git'
+                git 'https://github.com/your-repo.git'
+            }
+        }
+
+        stage('Build Artifact') {
+            steps {
+                sh 'npm install'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    docker.build("instagram-clone")
+                sh 'docker build -t $DOCKER_IMAGE:$DOCKER_TAG .'
+            }
+        }
+
+        stage('Login to Docker Hub') {
+            steps {
+                withCredentials([string(credentialsId: 'docker-password', variable: 'DOCKER_PASS')]) {
+                    sh 'echo $DOCKER_PASS | docker login -u your-dockerhub-username --password-stdin'
                 }
             }
         }
 
-        stage('Run Container') {
+        stage('Push to Docker Repo') {
             steps {
-                script {
-                    sh 'docker stop insta-container || true'
-                    sh 'docker rm insta-container || true'
-                    sh 'docker run -d -p 8080:80 --name insta-container instagram-clone'
-                }
+                sh 'docker push $DOCKER_IMAGE:$DOCKER_TAG'
             }
         }
     }
