@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Instagram Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fafafa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: #fff;
+            border: 1px solid #dbdbdb;
+            padding: 30px;
+            width: 300px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #dbdbdb;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #3897f0;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2a7cd6;
+        }
+
+        .footer {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: #3897f0;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="logo">Instagram</div>
+    
+    <form>
+        <input type="text" placeholder="Phone number, username, or email">
+        <input type="password" placeholder="Password">
+        <button type="submit">Log In</button>
+    </form>
+
+    <div class="footer">
+        Don't have an account? <a href="#">Sign up</a>
+    </div>
+</div>
+
+</body>
+</html>
